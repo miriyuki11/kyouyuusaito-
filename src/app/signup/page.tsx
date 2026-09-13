@@ -5,6 +5,7 @@ import { FormEvent, useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export default function SignUpPage() {
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -16,6 +17,11 @@ export default function SignUpPage() {
     event.preventDefault();
     setError("");
     setMessage("");
+
+    if (!displayName.trim()) {
+      setError("ユーザー名を入力してください。");
+      return;
+    }
 
     if (password.length < 8) {
       setError("パスワードは8文字以上で入力してください。");
@@ -34,6 +40,11 @@ export default function SignUpPage() {
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            display_name: displayName.trim(),
+          },
+        },
       });
 
       if (signUpError) {
@@ -46,7 +57,7 @@ export default function SignUpPage() {
         return;
       }
 
-      setMessage("登録が完了しました。ログイン画面を作成したら、ここからログインできます。");
+      setMessage("登録が完了しました。ログイン画面からログインしてください。");
     } catch {
       setError("登録を開始できませんでした。.env.local の Supabase 設定を確認してください。");
     } finally {
@@ -64,6 +75,20 @@ export default function SignUpPage() {
         </p>
 
         <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
+          <label className="block text-sm font-medium" htmlFor="display-name">
+            ユーザー名
+            <input
+              className="mt-2 h-11 w-full border border-zinc-300 px-3 outline-none focus:border-teal-700 focus:ring-2 focus:ring-teal-100"
+              id="display-name"
+              type="text"
+              autoComplete="name"
+              maxLength={30}
+              value={displayName}
+              onChange={(event) => setDisplayName(event.target.value)}
+              required
+            />
+          </label>
+
           <label className="block text-sm font-medium" htmlFor="email">
             メールアドレス
             <input

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "新規登録",
-  description: "アカウントを作成します。",
+  title: "pick | 最近買ってよかったものをシェア",
+  description: "あなたの最近のお気に入りを、写真とひとことでシェアする場所。",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
