@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { createSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
 export default function AuthButton() {
 	const router = useRouter();
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(isSupabaseConfigured);
 	const [isSigningOut, setIsSigningOut] = useState(false);
 
 	useEffect(() => {
+		if (!isSupabaseConfigured()) return;
+
 		let isMounted = true;
 		const supabase = createSupabaseBrowserClient();
 
