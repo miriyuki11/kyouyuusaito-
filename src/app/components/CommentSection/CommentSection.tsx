@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { getStoredJson, setStoredJson } from "@/lib/storage";
+import { addCommentNotification } from "@/lib/notifications";
 
 const commentsStorageKey = "pick-post-comments";
 
@@ -41,6 +42,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
 		const storedComments = getStoredJson<StoredComments>(commentsStorageKey, {});
 		const nextComments = [...(storedComments[postId] || []), nextComment];
 		setStoredJson(commentsStorageKey, { ...storedComments, [postId]: nextComments });
+		addCommentNotification(postId);
 		setComments(nextComments);
 		setDraft("");
 	}

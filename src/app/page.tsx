@@ -13,6 +13,7 @@ export default function Home() {
 	const [categories, setCategories] = useState(["すべて", ...defaultCategories]);
 	const [userPostIds, setUserPostIds] = useState<number[]>([]);
 	const [activeCategory, setActiveCategory] = useState("すべて");
+	const [searchQuery, setSearchQuery] = useState("");
 	const [isComposerOpen, setIsComposerOpen] = useState(false);
 	const [ratings, setRatings] = useState<Record<number, number>>({});
 
@@ -35,9 +36,13 @@ export default function Home() {
 		return () => window.clearTimeout(loadRatings);
 	}, []);
 
-	const visiblePosts = activeCategory === "すべて"
+	const categoryPosts = activeCategory === "すべて"
 		? posts
 		: posts.filter((post) => post.category === activeCategory);
+	const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+	const visiblePosts = normalizedSearchQuery
+		? categoryPosts.filter((post) => [post.title, post.description, post.name, post.category].some((value) => (value || "").toLowerCase().includes(normalizedSearchQuery)))
+		: categoryPosts;
 
 	function handlePostSubmit(newPost: Post, selectedRating: number) {
 		setPosts((current) => [newPost, ...current]);
@@ -58,9 +63,15 @@ export default function Home() {
 		});
 	}
 
+	function submitSearch() {
+		if (searchQuery.trim()) {
+			document.getElementById("feed")?.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	}
+
 	return (
 		<main className="site-shell">
-			<Header activePage="feed" onPostClick={() => setIsComposerOpen(true)} />
+			<Header activePage="feed" onPostClick={() => setIsComposerOpen(true)} searchQuery={searchQuery} onSearchChange={setSearchQuery} onSearchSubmit={submitSearch} />
 
 			<section className="intro" id="about">
 				<div>

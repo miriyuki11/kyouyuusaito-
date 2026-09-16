@@ -116,6 +116,8 @@ export default function MyPage() {
 				</div>
 				<div style={{ margin: "0 0 24px" }}>
 					<Link className="empty-button" href="/mypage/likes">いいねした投稿を見る</Link>
+					<Link className="empty-button" href="/mypage/saved" style={{ marginLeft: 8 }}>保存した投稿を見る</Link>
+					<Link className="empty-button" href="/mypage/notifications" style={{ marginLeft: 8 }}>通知を見る</Link>
 				</div>
 				{posts.length === 0 ? (
 					<div className="empty-posts">

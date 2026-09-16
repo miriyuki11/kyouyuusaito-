@@ -3,15 +3,18 @@ import type { Post } from "@/lib/posts";
 
 type LikedPostListProps = {
 	posts: Post[];
+	emptyTitle?: string;
+	emptyDescription?: string;
+	emptyMark?: string;
 };
 
-export default function LikedPostList({ posts }: LikedPostListProps) {
+export default function LikedPostList({ posts, emptyTitle = "いいねした投稿はまだありません", emptyDescription = "気に入った投稿にいいねして、あとで見返せます。", emptyMark = "♡" }: LikedPostListProps) {
 	if (posts.length === 0) {
 		return (
 			<div className="empty-posts">
-				<div className="empty-mark">♡</div>
-				<h3>いいねした投稿はまだありません</h3>
-				<p>気に入った投稿にいいねして、あとで見返せます。</p>
+				<div className="empty-mark">{emptyMark}</div>
+				<h3>{emptyTitle}</h3>
+				<p>{emptyDescription}</p>
 			</div>
 		);
 	}

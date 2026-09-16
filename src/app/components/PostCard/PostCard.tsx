@@ -1,6 +1,7 @@
 "use client";
 
 import FollowButton from "@/app/components/FollowButton/FollowButton";
+import BookmarkButton from "@/app/components/BookmarkButton/BookmarkButton";
 import RatingStars from "@/app/components/RatingStars/RatingStars";
 import Link from "next/link";
 import type { Post } from "@/lib/posts";
@@ -19,6 +20,7 @@ export default function PostCard({ post, index = 0, isOwn = false, rating = 0, o
 			<div className="post-meta"><span className="avatar">{post.avatar}</span><Link className="user-link" href={`/users/${encodeURIComponent(post.name)}`}>{post.name}</Link>{!isOwn && <FollowButton userName={post.name} />}<span className="post-date">{formatPostDate(post)}</span></div>
 			<p className="post-description">{post.description}</p>
 			{post.placeUrl && <div className="post-links"><a className="place-link" href={post.placeUrl} target="_blank" rel="noreferrer">購入場所を見る ↗</a></div>}
+			<div className="post-card-actions"><BookmarkButton postId={post.id} /></div>
 		</div>
 	</article>;
 }

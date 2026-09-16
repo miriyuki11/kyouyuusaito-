@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import CommentSection from "@/app/components/CommentSection/CommentSection";
+import BookmarkButton from "@/app/components/BookmarkButton/BookmarkButton";
 import Header from "@/app/components/Header/Header";
 import FollowButton from "@/app/components/FollowButton/FollowButton";
 import LikeButton from "@/app/components/LikeButton/LikeButton";
 import { getUserPosts } from "@/lib/posts";
+import { addLikedNotification, removeLikedNotification } from "@/lib/notifications";
 import { starterPosts } from "@/lib/starterPosts";
 import { getStoredJson, setStoredJson } from "@/lib/storage";
 import type { Post } from "@/types/posts";
@@ -46,6 +48,11 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
 			: [...likedPostIds, post.id];
 		setStoredJson(likedPostsStorageKey, nextLikedPostIds);
 		setIsLiked(nextLikedPostIds.includes(post.id));
+		if (nextLikedPostIds.includes(post.id)) {
+			addLikedNotification(post.id);
+		} else {
+			removeLikedNotification(post.id);
+		}
 	}
 
 	return (
@@ -61,7 +68,7 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
 						<div className="post-detail-meta"><span className="avatar">{post.avatar}</span><Link className="user-link" href={`/users/${encodeURIComponent(post.name)}`}>{post.name}</Link><FollowButton userName={post.name} /><span>{formatPostDate(post)}</span></div>
 						<p className="post-detail-description">{post.description}</p>
 						{post.placeUrl && <div className="post-links"><a className="place-link" href={post.placeUrl} target="_blank" rel="noreferrer">購入場所を見る ↗</a></div>}
-						<div className="post-detail-actions"><LikeButton liked={isLiked} count={post.likes + (isLiked ? 1 : 0)} onClick={toggleLike} label={`${post.name}さんの投稿にいいね`} /></div>
+						<div className="post-detail-actions"><LikeButton liked={isLiked} count={post.likes + (isLiked ? 1 : 0)} onClick={toggleLike} label={`${post.name}さんの投稿にいいね`} /><BookmarkButton postId={post.id} /></div>
 						<CommentSection postId={post.id} />
 					</div>
 				</article>
