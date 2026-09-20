@@ -33,10 +33,15 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .brand { align-items: center; color: var(--ink); display: flex; font-size: 23px; font-weight: 700; gap: 8px; letter-spacing: -.04em; text-decoration: none; }
 .brand-mark { align-items: center; background: var(--ink); border-radius: 50%; color: var(--lime); display: inline-flex; font-family: Georgia, serif; font-size: 22px; height: 30px; justify-content: center; padding-bottom: 3px; width: 30px; }
 .main-nav { display: flex; gap: 36px; margin-left: 120px; }
-.header-search { align-items: center; background: #fff; border: 1px solid var(--line); display: flex; gap: 7px; margin-left: auto; max-width: 250px; padding: 8px 11px; width: min(28vw, 250px); }
-.header-search:focus-within { border-color: #9ba95d; box-shadow: 0 0 0 3px rgba(217, 242, 103, .25); }
-.header-search-icon { color: var(--muted); font-size: 21px; line-height: .7; transform: rotate(-20deg); }
-.header-search input { background: transparent; border: 0; color: var(--ink); font-size: 11px; min-width: 0; outline: 0; width: 100%; }
+.header-search { align-items: center; background: #fff; border: 1px solid #c7c9c4; border-radius: 22px; display: flex; gap: 7px; left: 50%; height: 40px; max-width: 520px; overflow: hidden; padding: 0 0 0 17px; position: absolute; transform: translateX(-50%); width: min(38vw, 520px); }
+.header-search:focus-within { border-color: #8b927f; box-shadow: 0 1px 2px rgba(35, 37, 31, .08), 0 0 0 1px #8b927f; }
+.header-search-clear { align-items: center; align-self: stretch; background: transparent; border: 0; cursor: pointer; display: inline-flex; flex: 0 0 34px; justify-content: center; margin: 0; padding: 0; transition: background .2s ease; }
+.header-search-clear:hover { background: #f1f2ef; }
+.header-search-clear .header-search-icon { height: 16px; stroke: #777d73; width: 16px; }
+.header-search-button { align-items: center; align-self: stretch; background: #f3f4f1; border: 0; border-left: 1px solid #d8dad5; cursor: pointer; display: inline-flex; flex: 0 0 54px; justify-content: center; margin: 0; padding: 0; transition: background .2s ease; }
+.header-search-button:hover { background: #e8eae5; }
+.header-search-icon { fill: none; height: 19px; stroke: #4f544b; stroke-linecap: round; stroke-width: 1.8; width: 19px; }
+.header-search input { background: transparent; border: 0; color: var(--ink); font-size: 13px; min-width: 0; outline: 0; width: 100%; }
 .header-search input::placeholder { color: #a2a49d; }
 .header-actions { align-items: center; display: flex; gap: 18px; }
 .mypage-link { color: var(--ink); font-size: 12px; text-decoration: none; }
@@ -60,7 +65,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .note-line { background: #bdc2b5; height: 1px; margin-top: 10px; width: 48px; }
 .feed-section { background: #fff; border-top: 1px solid var(--line); padding: 84px clamp(24px, 6vw, 100px) 120px; scroll-margin-top: 78px; }
 .feed-toolbar { align-items: end; display: flex; justify-content: space-between; margin: 0 auto 38px; max-width: 1240px; }
-.feed-toolbar h2, .composer h2 { font-size: 23px; font-weight: 500; letter-spacing: -.04em; margin: 0; }
+.feed-toolbar h1, .feed-toolbar h2, .composer h2 { font-size: 23px; font-weight: 500; letter-spacing: -.04em; margin: 0; }
+.search-page { min-height: calc(100vh - 78px); }
+.search-count, .search-empty { color: var(--muted); font-size: 13px; margin: 0; }
+.search-options { align-items: center; display: flex; gap: 14px; }
+.search-sort { background: #fff; border: 1px solid var(--line); color: var(--ink); cursor: pointer; font-size: 12px; padding: 8px 28px 8px 10px; }
+.search-empty { margin: 34px auto 0; max-width: 1240px; }
 .feed-toolbar .section-kicker, .composer .section-kicker { margin-bottom: 12px; }
 .category-tabs { display: flex; flex-wrap: wrap; gap: 22px; }
 .category-tab { background: none; border: 0; color: #a4a69e; cursor: pointer; font-size: 12px; padding: 4px 0; }
@@ -209,7 +219,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .post-detail-content .comment-section { max-width: 620px; }
 @media (max-width: 700px) {
   .site-header { height: 65px; padding: 0 18px; }
-  .header-search { margin-left: 16px; max-width: none; width: 100%; }
+  .header-search { flex: 1 1 120px; left: auto; margin-left: 12px; max-width: none; min-width: 90px; position: static; transform: none; width: auto; }
+  .header-search-button { flex-basis: 44px; }
   .header-post-button { padding: 10px 13px; }
   .header-actions { gap: 10px; }
   .mypage-link { font-size: 11px; }
