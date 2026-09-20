@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import CategoryTabs from "@/app/components/CategoryTabs/CategoryTabs";
 import FeedPosts from "@/app/components/FeedPosts/FeedPosts";
 import Header from "@/app/components/Header/Header";
@@ -9,6 +10,7 @@ import { defaultCategories, getPostRatings, getUserCategories, getUserPosts, Pos
 import { starterPosts } from "@/lib/starterPosts";
 
 export default function Home() {
+	const router = useRouter();
 	const [posts, setPosts] = useState<Post[]>(starterPosts);
 	const [categories, setCategories] = useState(["すべて", ...defaultCategories]);
 	const [userPostIds, setUserPostIds] = useState<number[]>([]);
@@ -39,11 +41,6 @@ export default function Home() {
 	const categoryPosts = activeCategory === "すべて"
 		? posts
 		: posts.filter((post) => post.category === activeCategory);
-	const normalizedSearchQuery = searchQuery.trim().toLowerCase();
-	const visiblePosts = normalizedSearchQuery
-		? categoryPosts.filter((post) => [post.title, post.description, post.name, post.category].some((value) => (value || "").toLowerCase().includes(normalizedSearchQuery)))
-		: categoryPosts;
-
 	function handlePostSubmit(newPost: Post, selectedRating: number) {
 		setPosts((current) => [newPost, ...current]);
 		setUserPostIds((current) => [newPost.id, ...current]);
@@ -64,9 +61,8 @@ export default function Home() {
 	}
 
 	function submitSearch() {
-		if (searchQuery.trim()) {
-			document.getElementById("feed")?.scrollIntoView({ behavior: "smooth", block: "start" });
-		}
+		const query = searchQuery.trim();
+		if (query) router.push(`/search?q=${encodeURIComponent(query)}`);
 	}
 
 	return (
@@ -95,7 +91,7 @@ export default function Home() {
 					<CategoryTabs categories={categories} activeCategory={activeCategory} onChange={setActiveCategory} />
 				</div>
 
-				<FeedPosts posts={visiblePosts} userPostIds={userPostIds} ratings={ratings} onRate={ratePost} />
+				<FeedPosts posts={categoryPosts} userPostIds={userPostIds} ratings={ratings} onRate={ratePost} />
 			</section>
 
 			{isComposerOpen && (
